@@ -8,11 +8,20 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView ed_Number;
+    private TextView message;
+    private ImageView result;
+    int secret = new Random().nextInt(10)+1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ed_Number = findViewById(R.id.num);
+        message = findViewById(R.id.message);
+        result = findViewById(R.id.result);
+        Log.d("MainActivity","Secrert : "+secret);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -29,6 +42,25 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+    public void guess(View view){
+        int number = Integer.parseInt(ed_Number.getText().toString());
+        result.setAlpha(1.0f);
+        result.setVisibility(View.VISIBLE);
+        if(secret > number){
+            message.setText("Larger !");
+            result.setImageResource(R.drawable.sad);
+            result.animate().alpha(0.0f).setDuration(1500);
+        }
+        else if(secret < number){
+            message.setText("Smaller !");
+            result.setImageResource(R.drawable.sad);
+            result.animate().alpha(0.0f).setDuration(1500);
+        }
+        else{
+            message.setText("Bingo ! The secret number is "+secret);
+            result.setImageResource(R.drawable.good);
+        }
     }
 
     @Override
